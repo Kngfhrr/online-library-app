@@ -1,0 +1,20 @@
+@import 'antd/dist/antd.css';
+
+#root {
+    height: 100%;
+}
+.ant-layout {
+    height: 100%;
+}
+
+.news-container {
+    height: 100%;
+    max-height: 85vh;
+    overflow-x: auto;
+    padding: 20px;
+    border-bottom: 2px solid #ccc;
+}
+.logo {
+    color: #fff;
+    font-weight: bold;
+}
