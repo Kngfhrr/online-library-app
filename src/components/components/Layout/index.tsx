@@ -1,14 +1,15 @@
 import React from "react";
-import {Link, Outlet} from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import {Layout} from "antd";
 import Sidebar from "../Sidebar";
 import Header from "../Header";
-const { Content } = Layout;
+
+const {Content} = Layout;
 
 const LayoutComponent: React.FC<{}> = () => {
     return (
         <Layout className='h-100'>
-            <Sidebar />
+            <Sidebar/>
             <Layout className="site-layout">
                 <Header></Header>
                 <Content
@@ -19,7 +20,7 @@ const LayoutComponent: React.FC<{}> = () => {
                         minHeight: 280,
                     }}
                 >
-                   <Outlet />
+                    <Outlet/>
                 </Content>
             </Layout>
         </Layout>

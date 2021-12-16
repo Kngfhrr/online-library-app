@@ -1,42 +1,10 @@
-import axios from 'axios';
+import data from '../test.json'
 
-export const request = async (url, method, payload) => {
+const library = localStorage.getItem('library')
 
-    const token = localStorage.getItem('token');
-    try {
-        const res = await axios({
-            url: `${process.env.REACT_APP_BASE_URL}${url}&apiKey=${process.env.REACT_APP_API_KEY}`,
-            headers: {
-                ...(token && {Authorization: `Bearer ${token}`})
-            },
-            method,
-            data: payload
-        });
-        if (res.data && res.data.accessToken) {
-            localStorage.setItem('token', res.data.accessToken)
-        }
-        return res.data;
-    } catch (error) {
-        if (error.response.status === 401) {
-            localStorage.removeItem('token');
-        }
-        throw error;
+export async function init() {
+    if(library) {
+        return JSON.parse(library)
     }
-
+    return data.categories
 }
-
-
-export async function getShipments() {
-    const res = await fetchAPI(`/shipments.json`)
-    return res.data
-}
-
-export const loadLibrary = async () => {
-    const res = await getShipments()
-    localStorage.setItem('shipments', JSON.stringify(res))
-    return res
-}
-
-
-
-

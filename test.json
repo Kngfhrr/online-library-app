@@ -1,0 +1,32 @@
+{
+  "categories": [
+    {
+      "category_name": "fantasy",
+      "collection": [
+        {
+          "key": 1,
+          "title": "Title 1",
+          "author": "Tolstoy, Leo",
+          "year_written": 1865
+        },
+        {
+          "key": 2,
+          "title": "Title 2",
+          "author": "Tolstoy, Leo",
+          "year_written": 18625
+        }
+      ]
+    },
+    {
+      "category_name": "novels",
+      "collection": [
+        {
+          "key": 1,
+          "title": "Title 2",
+          "author": "Leo",
+          "year_written": 1465
+        }
+      ]
+    }
+  ]
+}

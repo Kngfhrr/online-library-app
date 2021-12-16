@@ -1,23 +1,26 @@
 import '../../../index.css'
 import React from 'react'
-import { Empty, Menu, Layout } from 'antd'
-import { BookOutlined, StarOutlined } from '@ant-design/icons';
-import {Link, Outlet} from "react-router-dom";
-const { Sider } = Layout
+import { Menu, Layout, Badge} from 'antd'
+import {BookOutlined, StarOutlined} from '@ant-design/icons';
+import { Link } from "react-router-dom";
+import { useSelector} from 'react-redux'
+
+const {Sider} = Layout
+const {SubMenu} = Menu;
 
 interface SiderProps {
     collapsed?: boolean
     shipments?: object[]
-    onSelect?: ()=>void
-    setCollapsed?: ()=>void
+    onSelect?: () => void
+    setCollapsed?: () => void
 }
 
-const Sidebar: React.FC<SiderProps> = ({ collapsed, shipments, onSelect, setCollapsed }) => {
+const Sidebar: React.FC<SiderProps> = ({collapsed, shipments, onSelect, setCollapsed}) => {
+
+    const wishlist = useSelector((state: any) => state.library.wishlist)
+
     return (
         <Sider
-            collapsible
-            collapsed={collapsed}
-            // onCollapse={() => setCollapsed(!collapsed)}
             className="site-layout-background"
             width={300}
         >
@@ -32,20 +35,31 @@ const Sidebar: React.FC<SiderProps> = ({ collapsed, shipments, onSelect, setColl
                 <div className="logo mb-5">
 
                 </div>
-                <Menu.Item key="1" icon={<BookOutlined />}>
-                    <Link
-                        className="text-decoration-none"
-                        to={'/'}
-                    >
-                        Library
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key="2" icon={<StarOutlined />}>
+                <SubMenu key="sub1" icon={<BookOutlined/>} title="Library">
+                    <Menu.ItemGroup key="g1" title="Categories">
+                        <Menu.Item key="1">
+                            <Link
+                                to={'/fantasy'}
+                            >
+                                Fantasy
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="2">
+                            <Link
+                                to={'/novels'}
+                            >
+                                Novels
+                            </Link>
+                        </Menu.Item>
+
+                    </Menu.ItemGroup>
+                </SubMenu>
+                <Menu.Item key="3" icon={<StarOutlined/>}>
                     <Link
                         className="text-decoration-none"
                         to={'/wishlist'}
                     >
-                        Wishlist
+                        Wishlist <Badge style={{marginLeft: 10}} count={wishlist.length}/>
                     </Link>
                 </Menu.Item>
             </Menu>
