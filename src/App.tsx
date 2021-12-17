@@ -5,7 +5,7 @@ import React, {useEffect} from 'react'
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 import WishList from "./pages/WishList";
-import LayoutComponent from "./components/components/Layout";
+import LayoutComponent from "./components/Layout";
 import EditableTable from "./pages/Main";
 import {loadState} from "./localStorage";
 import {initState} from "./store/actions";

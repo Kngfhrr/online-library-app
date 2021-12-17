@@ -2,14 +2,14 @@ import {combineReducers} from 'redux';
 import {handleActions} from 'redux-actions';
 import {addBook, addFavorite, addLibrary, deleteBook, editBook, initState} from './actions';
 
+
 const defaultState = {
     collection: [],
     wishlist: [],
 };
 
 
-// @ts-ignore
-const initStateHandler = (state: any, {payload: {collection, wishlist}}) => {
+const initStateHandler = (state: any, {payload: {collection, wishlist}}: any) => {
     return {...state, collection: collection, wishlist: wishlist}
 }
 
@@ -18,8 +18,8 @@ const loadLibraryHandler = (state: object, data: { payload: object; }) => {
 }
 
 
-// @ts-ignore
-const addBookHandler = (state: any, {payload: {book, id}}) => {
+
+const addBookHandler = (state: { collection: any; }, {payload: {book, id}}: any) => {
     let updated = [...state.collection]
     const mod = updated.map((item) => {
         if (item.category_name === id) {
@@ -31,8 +31,8 @@ const addBookHandler = (state: any, {payload: {book, id}}) => {
     return {...state, collection: mod};
 };
 
-// @ts-ignore
-const addFavoriteHandler = (state: any, {payload: {book, id}}) => {
+
+const addFavoriteHandler = (state: { collection: any; wishlist: any; }, {payload: {book, id}}: any) => {
     const collection = [...state.collection]
     let wishlist = [...state.wishlist]
 
@@ -55,6 +55,7 @@ const addFavoriteHandler = (state: any, {payload: {book, id}}) => {
     return {...state, wishlist, collection}
 }
 
+
 // @ts-ignore
 const deleteBookHandler = (state: any, {payload: {book, id}}) => {
     let updated_collection = [...state.collection]
@@ -67,7 +68,7 @@ const deleteBookHandler = (state: any, {payload: {book, id}}) => {
         return item
     })
 
-    updated_wishlist = updated_wishlist.filter((b: any) => b.key !== book.key)
+    updated_wishlist = updated_wishlist.filter((b) => b.key !== book.key)
 
     return {...state, collection: updated_collection, wishlist: updated_wishlist};
 }
@@ -75,21 +76,21 @@ const deleteBookHandler = (state: any, {payload: {book, id}}) => {
 // @ts-ignore
 const editBookHandler = (state: any, {payload: {book, id}}) => {
     let updated = [...state.collection]
-    updated = updated.map((item) => {
+    updated.map((item) => {
         if (item.category_name === id) {
-            console.log('ITEM', item)
             const index = item.collection.findIndex((i: any) => i.key === book.key)
             item.collection[index] = book
             return {...item}
         }
         return item
     })
-    return {...state, updated};
+    return {...state, collection: [...updated]};
 };
+
 
 const handlers = {
     // @ts-ignore
-    [addBook]: addBookHandler,
+    [addBook]:  addBookHandler,
     // @ts-ignore
     [addLibrary]: loadLibraryHandler,
     // @ts-ignore
