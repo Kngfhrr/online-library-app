@@ -1,10 +1,12 @@
-import React  from "react";
+import React, {useEffect, useState} from "react";
 import { Table } from 'antd';
 import { useSelector} from 'react-redux'
 
 
+
 const WishList: React.FC<{}> = () => {
-    const wishlist = useSelector((state: any) => state.library.wishlist)
+
+    const wishlist = useSelector((state:any) => state.library.wishlist)
 
     const columns = [
         {

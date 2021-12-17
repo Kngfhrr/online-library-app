@@ -5,17 +5,19 @@ import {Provider} from 'react-redux'
 import {createStore} from 'redux';
 import reducers from "./store/reducers";
 
+import {loadState, saveState} from "./localStorage";
 
-const persistedState = localStorage.getItem('library')
-    ? JSON.parse(localStorage.getItem('library') as string)
-    : []
+
+const persistedState = loadState();
 
 const store = createStore(reducers, persistedState);
 
 store.subscribe(() => {
-    localStorage.setItem('library', JSON.stringify(store.getState().library.collection))
-    localStorage.setItem('wishlist', JSON.stringify(store.getState().library.wishlist))
-})
+    saveState({
+      wishlist: store.getState().library.wishlist,
+      collection: store.getState().library.collection
+    });
+});
 
 ReactDOM.render(
     <Provider store={store}>

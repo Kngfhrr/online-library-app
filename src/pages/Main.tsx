@@ -1,15 +1,14 @@
 import '../index.css'
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useParams} from "react-router-dom";
 import {StarTwoTone, CloseCircleTwoTone} from '@ant-design/icons';
-import {addBook, addLibrary, addFavorite, deleteBook} from '../store/actions';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux'
+import {addBook, addFavorite, deleteBook, editBook} from '../store/actions';
+import {useSelector, useDispatch} from 'react-redux'
 import {Table, Input, InputNumber, Popconfirm, Form, Typography, Button} from 'antd';
-
-import {init} from "../api";
-
+import {generateId} from "../helpers";
 
 interface Item {
+    is_checked: Boolean;
     key: string;
     name: string;
     age: number;
@@ -63,34 +62,19 @@ const EditableCell: React.FC<EditableCellProps> = ({
     );
 };
 
-const EditableTable = (props: any) => {
+const EditableTable = () => {
 
-        const {id} = useParams();
+        const { id } = useParams();
         const dispatch = useDispatch()
 
-        const cat = useSelector((state: any) => state.library.collection, shallowEqual)
+        const cat = useSelector((state: any) => state.library.collection)
 
         const [form] = Form.useForm();
         const [form_secondary] = Form.useForm()
 
         const [editingKey, setEditingKey] = useState('');
 
-
-        useEffect(() => {
-            loadLibrary()
-        }, [shallowEqual])
-
-
-        const loadLibrary = async () => {
-            try {
-                const res = await init()
-                dispatch(addLibrary(res))
-            } catch (e) {
-                console.log('e', e)
-            }
-        }
-
-        const current = cat.find((item: any) => item.category_name === id)
+        const current = cat.find((item: any) => item.category_name === (id || 'fantasy'))
 
         const isEditing = (record: Item) => record.key === editingKey;
 
@@ -109,7 +93,7 @@ const EditableTable = (props: any) => {
                 await dispatch(addBook(
                     {
                         book: {
-                            key: cat.length + 1,
+                            key: generateId(),
                             title: data.title,
                             author: data.author,
                             year_written: data.year,
@@ -120,23 +104,18 @@ const EditableTable = (props: any) => {
             }
         }
 
+
+
         const save = async (key: React.Key) => {
             try {
                 const row = (await form.validateFields()) as Item;
-
-                const newData = [...props.data.collection[id || 'fantasy']];
+                const newData = [...current.collection];
                 const index = newData.findIndex(item => key === item.key);
                 if (index > -1) {
-                    const item = newData[index];
-                    newData.splice(index, 1, {
-                        ...item,
-                        ...row,
-                    });
+                    dispatch(editBook({book: {...row, key: key}, id}))
                     setEditingKey('');
                 } else {
                     newData.push(row);
-                    // setData(newData);
-                    props.addLibrary(newData)
                     setEditingKey('');
                 }
             } catch (errInfo) {
@@ -183,8 +162,8 @@ const EditableTable = (props: any) => {
                                     Edit
                                 </Typography.Link>
                                 <StarTwoTone
-                                    onClick={() => dispatch(addFavorite({book: record}))}
-                                    twoToneColor={true ? '#2C8DFC' : '#BBBBBB'}
+                                    onClick={() => dispatch(addFavorite({book: record, id}))}
+                                    twoToneColor={(record.is_checked) ? '#2C8DFC' : '#BBBBBB'}
                                     style={{marginLeft: 30, fontSize: 20}}/>
                                 <CloseCircleTwoTone
                                     twoToneColor='#ccc'
@@ -216,6 +195,7 @@ const EditableTable = (props: any) => {
 
         return (
             <>
+                {console.log("++++++++++", current?.collection)}
                 <Form style={{marginBottom: 20}} form={form_secondary} name="horizontal_login" layout="inline"
                       onFinish={add}>
                     <Form.Item

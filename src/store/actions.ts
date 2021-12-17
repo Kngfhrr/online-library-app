@@ -9,3 +9,5 @@ export const editBook = createAction('BOOK_EDIT')
 export const addFavorite = createAction('ADD_FAVORITE')
 
 export const deleteBook = createAction('DELETE_BOOK')
+
+export const initState = createAction('INIT_STATE')

@@ -1,9 +1,9 @@
 import '../../../index.css'
 import React from 'react'
-import { Menu, Layout, Badge} from 'antd'
+import {Menu, Layout, Badge} from 'antd'
 import {BookOutlined, StarOutlined} from '@ant-design/icons';
-import { Link } from "react-router-dom";
-import { useSelector} from 'react-redux'
+import {Link} from "react-router-dom";
+import {useSelector} from 'react-redux'
 
 const {Sider} = Layout
 const {SubMenu} = Menu;
@@ -17,7 +17,7 @@ interface SiderProps {
 
 const Sidebar: React.FC<SiderProps> = ({collapsed, shipments, onSelect, setCollapsed}) => {
 
-    const wishlist = useSelector((state: any) => state.library.wishlist)
+    const {wishlist, collection} = useSelector((state: any) => state.library)
 
     return (
         <Sider
@@ -41,14 +41,16 @@ const Sidebar: React.FC<SiderProps> = ({collapsed, shipments, onSelect, setColla
                             <Link
                                 to={'/fantasy'}
                             >
-                                Fantasy
+                                Fantasy <Badge style={{marginLeft: 10, backgroundColor: '#52c41a'}}
+                                               count={collection[0]?.collection.length}/>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="2">
                             <Link
                                 to={'/novels'}
                             >
-                                Novels
+                                Novels <Badge style={{marginLeft: 10, backgroundColor: '#52c41a'}}
+                                              count={collection[1]?.collection.length}/>
                             </Link>
                         </Menu.Item>
 
