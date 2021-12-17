@@ -30,9 +30,13 @@ const EditableTable = () => {
 
     const [editingKey, setEditingKey] = useState('')
 
+
+
     const current = categories.find(
         (item: any) => item.category_name === (id || 'fantasy')
     )
+
+    console.log('cater', current)
 
     const isEditing = (record: Item) => record.key === editingKey
 
@@ -45,7 +49,7 @@ const EditableTable = () => {
         setEditingKey('')
     }
 
-    const add = async (data: any) => {
+    const add = async (data: { title: any; author: any; year: any }) => {
         try {
             await dispatch(
                 addBook({
@@ -215,7 +219,7 @@ const EditableTable = () => {
                         },
                     }}
                     bordered
-                    dataSource={current?.collection}
+                    dataSource={current && current.collection}
                     // @ts-ignore
                     columns={mergedColumns}
                     rowClassName="editable-row"
