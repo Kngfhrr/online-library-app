@@ -36,8 +36,6 @@ const EditableTable = () => {
         (item: any) => item.category_name === (id || 'fantasy')
     )
 
-    console.log('cater', current)
-
     const isEditing = (record: Item) => record.key === editingKey
 
     const edit = (record: Partial<Item> & { key: React.Key }) => {
